@@ -432,8 +432,10 @@ class Correlation:
         """
         Plot the PCA of a matrix
         """
+        plt.rcParams['pdf.fonttype'] = 42
 
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(5, 10))
+        #fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(5, 10))
+        fig, ax1 = plt.subplots(1, 1, figsize=(10, 20))
         # PCA
         mlab_pca = matplotlib.mlab.PCA(self.matrix)
         n = len(self.labels)
@@ -445,6 +447,8 @@ class Correlation:
         for i in range(n):
             ax1.scatter(mlab_pca.Wt[0, i], mlab_pca.Wt[1, i],
                         marker=next(markers), color=next(colors), s=150, label=self.labels[i], zorder=i + 3)
+            ax1.annotate(self.labels[i], (mlab_pca.Wt[0, i], mlab_pca.Wt[1, i]))
+
         if plot_title == '':
             ax1.set_title('PCA')
         else:
@@ -456,30 +460,30 @@ class Correlation:
                          prop={'size': 12}, markerscale=0.9)
 
         # Scree plot
-        eigenvalues = mlab_pca.s
+        #eigenvalues = mlab_pca.s
+        
+        #cumulative = []
+        #c = 0
+        #for x in mlab_pca.fracs:
+        #    c += x
+        #    cumulative.append(c)
+        
+        #ind = np.arange(n)  # the x locations for the groups
+        #width = 0.35        # the width of the bars
 
-        cumulative = []
-        c = 0
-        for x in mlab_pca.fracs:
-            c += x
-            cumulative.append(c)
-
-        ind = np.arange(n)  # the x locations for the groups
-        width = 0.35        # the width of the bars
-
-        ax2.bar(width + ind, eigenvalues, width * 2)
-        ax2.set_ylabel('Eigenvalue')
-        ax2.set_xlabel('Factors')
-        ax2.set_title('Scree plot')
-        ax2.set_xticks(ind + width * 2)
-        ax2.set_xticklabels(ind + 1)
-
-        ax3 = ax2.twinx()
-        ax3.axhline(y=1, color="black", linestyle="dotted")
-        ax3.plot(width * 2 + ind, cumulative[0:], "r-")
-        ax3.plot(width * 2 + ind, cumulative[0:], "wo")
-        ax3.set_ylim([0, 1.05])
-        ax3.set_ylabel('Cumulative variability')
+        #ax2.bar(width + ind, eigenvalues, width * 2)
+        #ax2.set_ylabel('Eigenvalue')
+        #ax2.set_xlabel('Factors')
+        #ax2.set_title('Scree plot')
+        #ax2.set_xticks(ind + width * 2)
+        #ax2.set_xticklabels(ind + 1)
+        
+        #ax3 = ax2.twinx()
+        #ax3.axhline(y=1, color="black", linestyle="dotted")
+        #ax3.plot(width * 2 + ind, cumulative[0:], "r-")
+        #ax3.plot(width * 2 + ind, cumulative[0:], "wo")
+        #ax3.set_ylim([0, 1.05])
+        #ax3.set_ylabel('Cumulative variability')
 
         plt.subplots_adjust(top=3.85)
         plt.tight_layout()
